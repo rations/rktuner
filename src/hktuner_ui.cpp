@@ -251,7 +251,9 @@ public:
 
     void SetClarity(float clarity)
     {
-        fClarity = clarity;
+        // A host may report an output port before the plugin has written it,
+        // as NaN; keep that out of the clarity indicator.
+        fClarity = isfinite(clarity) ? clarity : 0.0f;
     }
 
 private:

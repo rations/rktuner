@@ -5,14 +5,30 @@
 @prefix units: <http://lv2plug.in/ns/extensions/units#> .
 @prefix work:  <http://lv2plug.in/ns/ext/worker#> .
 
+# ui:portNotification is load-bearing, not decorative. The UI extension states
+# that a host by default calls port_event() only for lv2:ControlPort *inputs*.
+# Ports 1 (freq) and 2 (clarity) are outputs, so a host that follows the spec
+# never sends the readout a value without these declarations.
 <https://github.com/rations/hktuner#ui>
 	a uihk:HaikuUI ;
-	ui:binary <hktuner_ui.so> .
+	ui:binary <hktuner_ui.so> ;
+	ui:portNotification [
+		ui:plugin <https://github.com/rations/hktuner> ;
+		ui:portIndex 1 ;
+		ui:protocol ui:floatProtocol
+	] , [
+		ui:plugin <https://github.com/rations/hktuner> ;
+		ui:portIndex 2 ;
+		ui:protocol ui:floatProtocol
+	] .
 
+# The version tracks the package version (0.4.0): minor 4, micro 0.
 <https://github.com/rations/hktuner>
 	a lv2:Plugin ,
 		lv2:AnalyserPlugin ;
 	doap:name "hktuner Chromatic Tuner" ;
+	lv2:minorVersion 4 ;
+	lv2:microVersion 0 ;
 	doap:license <http://opensource.org/licenses/MIT> ;
 	lv2:optionalFeature lv2:hardRTCapable ,
 		work:schedule ;
