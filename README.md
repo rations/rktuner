@@ -1,5 +1,8 @@
 # hktuner
 
+> **Users:** install the whole stack from the [JackDAW release](https://github.com/rations/jackDAW-haiku/releases)
+> (`sh install.sh`). This repository is the source of the `hktuner` package.
+
 A chromatic tuner LV2 plugin for [Haiku OS](https://www.haiku-os.org/), with a native
 Interface Kit GUI. MIT licensed.
 
