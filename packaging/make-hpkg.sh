@@ -5,7 +5,7 @@
 #
 # Needs the sibling LV2-haiku checkout built first — the plugin compiles
 # against its staged lv2 headers (LV2_HAIKU, default $HOME/LV2-haiku), and the
-# LV2 spec bundles a host needs at runtime ship in the lv2_haiku package.
+# LV2 spec bundles a host needs at runtime ship in the lv2_renku package.
 set -e
 
 HERE=$(cd "$(dirname "$0")" && pwd)

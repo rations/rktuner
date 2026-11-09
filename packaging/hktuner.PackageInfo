@@ -8,7 +8,7 @@ Stereo pass-through - drop it anywhere in a chain and the audio is copied throug
 untouched while pitch is detected on the L+R mix. Pitch detection is clean-room
 time-domain MPM/NSDF run off the audio thread via the LV2 worker extension. The A4
 reference defaults to 440 Hz and is settable from 380-500 Hz. Loads in any LV2 host;
-the GUI needs a host that supports the LV2-haiku HaikuUI UI type, such as JackDAW."
+the GUI needs a host that supports the HaikuUI UI type, such as Kasen."
 packager		"rations <ehqcar@proton.me>"
 vendor			"rations"
 copyrights {
@@ -22,7 +22,7 @@ provides {
 }
 requires {
 	haiku
-	lv2_haiku
+	lv2_renku
 }
 urls {
 	"https://github.com/rations/hktuner"
