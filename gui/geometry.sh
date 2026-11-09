@@ -1,4 +1,4 @@
-# Master geometry for the hktuner screen art. Sourced by every make_*.sh;
+# Master geometry for the rktuner screen art. Sourced by every make_*.sh;
 # the same numbers are mirrored as constants in the UI source. All values
 # are in FINAL (1x) pixels; scripts render at 2x and downscale.
 #

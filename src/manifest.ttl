@@ -1,7 +1,7 @@
 @prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<https://github.com/rations/hktuner>
+<https://github.com/rations/rktuner>
 	a lv2:Plugin ;
-	lv2:binary <hktuner.so> ;
-	rdfs:seeAlso <hktuner.ttl> .
+	lv2:binary <rktuner.so> ;
+	rdfs:seeAlso <rktuner.ttl> .

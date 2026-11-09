@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * hktuner — chromatic tuner LV2 plugin for Haiku. Stereo pass-through: the
+ * rktuner — chromatic tuner LV2 plugin for Haiku. Stereo pass-through: the
  * audio is copied to the outputs untouched while pitch is detected on the
  * (L+R)/2 mix.
  *
@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define HKTUNER_URI "https://github.com/rations/hktuner"
+#define RKTUNER_URI "https://github.com/rations/rktuner"
 
 /* Detection calibration. Window ~85 ms and ~10 estimates/s are standard
    tuner values; the gate hysteresis pair is in mean-absolute-sample terms.
@@ -106,7 +106,7 @@ typedef struct {
     uint32_t hold_left; /* worker-only hold countdown             */
     float held_freq;    /* worker-only last good reading          */
     float held_clarity;
-} Hktuner;
+} Rktuner;
 
 static uint32_t next_pow2(uint32_t v)
 {
@@ -127,7 +127,7 @@ static LV2_Handle instantiate(const LV2_Descriptor *descriptor, double rate,
         return NULL;
     }
 
-    Hktuner *t = (Hktuner *)calloc(1, sizeof(Hktuner));
+    Rktuner *t = (Rktuner *)calloc(1, sizeof(Rktuner));
     if (!t) {
         return NULL;
     }
@@ -168,7 +168,7 @@ static LV2_Handle instantiate(const LV2_Descriptor *descriptor, double rate,
 
 static void connect_port(LV2_Handle instance, uint32_t port, void *data)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
 
     switch ((PortIndex)port) {
         case HKT_REF_FREQ:
@@ -197,7 +197,7 @@ static void connect_port(LV2_Handle instance, uint32_t port, void *data)
 
 static void activate(LV2_Handle instance)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
 
     /* Non-RT per the LV2 threading rules: safe to clear buffers here. */
     memset(t->cap, 0, t->win * sizeof(float));
@@ -214,7 +214,7 @@ static void activate(LV2_Handle instance)
 
 static void run(LV2_Handle instance, uint32_t n_samples)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
 
     /* A conforming host connects every port before run(), but a port left
        unconnected must not crash the plugin. */
@@ -342,7 +342,7 @@ static uint32_t pick_peak(const float *nsdf, uint32_t tau_max)
 static LV2_Worker_Status work(LV2_Handle instance, LV2_Worker_Respond_Function respond,
                               LV2_Worker_Respond_Handle handle, uint32_t size, const void *data)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
     HktResult res = {0.0f, 0.0f};
 
     /* The token is our own 4-byte marker; anything else is malformed. */
@@ -410,7 +410,7 @@ static LV2_Worker_Status work(LV2_Handle instance, LV2_Worker_Respond_Function r
 /* Called by the host in the RT context: plain stores only. */
 static LV2_Worker_Status work_response(LV2_Handle instance, uint32_t size, const void *body)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
 
     if (size == sizeof(HktResult) && body) {
         const HktResult *res = (const HktResult *)body;
@@ -430,7 +430,7 @@ static void deactivate(LV2_Handle instance)
 
 static void cleanup(LV2_Handle instance)
 {
-    Hktuner *t = (Hktuner *)instance;
+    Rktuner *t = (Rktuner *)instance;
 
     if (t) {
         free(t->cap);
@@ -448,7 +448,7 @@ static const void *extension_data(const char *uri)
     return NULL;
 }
 
-static const LV2_Descriptor descriptor = {HKTUNER_URI, instantiate, connect_port, activate,
+static const LV2_Descriptor descriptor = {RKTUNER_URI, instantiate, connect_port, activate,
                                           run,         deactivate,  cleanup,      extension_data};
 
 LV2_SYMBOL_EXPORT

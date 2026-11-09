@@ -9,31 +9,31 @@
 # that a host by default calls port_event() only for lv2:ControlPort *inputs*.
 # Ports 1 (freq) and 2 (clarity) are outputs, so a host that follows the spec
 # never sends the readout a value without these declarations.
-<https://github.com/rations/hktuner#ui>
+<https://github.com/rations/rktuner#ui>
 	a uihk:HaikuUI ;
-	ui:binary <hktuner_ui.so> ;
+	ui:binary <rktuner_ui.so> ;
 	ui:portNotification [
-		ui:plugin <https://github.com/rations/hktuner> ;
+		ui:plugin <https://github.com/rations/rktuner> ;
 		ui:portIndex 1 ;
 		ui:protocol ui:floatProtocol
 	] , [
-		ui:plugin <https://github.com/rations/hktuner> ;
+		ui:plugin <https://github.com/rations/rktuner> ;
 		ui:portIndex 2 ;
 		ui:protocol ui:floatProtocol
 	] .
 
 # The version tracks the package version (0.4.0): minor 4, micro 0.
-<https://github.com/rations/hktuner>
+<https://github.com/rations/rktuner>
 	a lv2:Plugin ,
 		lv2:AnalyserPlugin ;
-	doap:name "hktuner Chromatic Tuner" ;
+	doap:name "rktuner Chromatic Tuner" ;
 	lv2:minorVersion 4 ;
 	lv2:microVersion 0 ;
 	doap:license <http://opensource.org/licenses/MIT> ;
 	lv2:optionalFeature lv2:hardRTCapable ,
 		work:schedule ;
 	lv2:extensionData work:interface ;
-	ui:ui <https://github.com/rations/hktuner#ui> ;
+	ui:ui <https://github.com/rations/rktuner#ui> ;
 	lv2:port [
 		a lv2:InputPort ,
 			lv2:ControlPort ;

@@ -1,0 +1,35 @@
+name			rktuner
+version			@VERSION@-@REVISION@
+architecture	x86_64
+summary			"rktuner - chromatic tuner app and LV2 plug-in (RenkuOS)"
+description		"A chromatic tuner for RenkuOS, as an app (rktuner, in the Applications
+menu) and as an LV2 plug-in with a native Interface Kit display: an LED-matrix screen
+showing note name, octave, a cents strip and flat/sharp bars. The app tunes the input
+you choose in its Audio menu, on the RenkuOS Media Kit or, with the jack package
+installed, JACK; the plug-in drops into any LV2 host (its display needs one that
+supports the HaikuUI UI type, such as Kasen) and copies the audio through untouched.
+Pitch detection is clean-room time-domain MPM/NSDF run off the audio thread via the LV2
+worker extension. The A4 reference defaults to 440 Hz and is settable from 380-500 Hz."
+packager		"rations <ehqcar@proton.me>"
+vendor			"rations"
+copyrights {
+	"2026 rations"
+}
+licenses {
+	"MIT"
+}
+provides {
+	rktuner = @VERSION@
+	app:rktuner = @VERSION@
+}
+requires {
+	haiku >= @HAIKU_MIN@
+	lv2_renku
+	libsamplerate
+}
+replaces {
+	hktuner
+}
+urls {
+	"https://github.com/rations/rktuner"
+}

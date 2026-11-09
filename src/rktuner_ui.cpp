@@ -1,5 +1,5 @@
 /*
- * hktuner_ui — native Haiku (Interface Kit) UI for the hktuner chromatic
+ * rktuner_ui — native Haiku (Interface Kit) UI for the rktuner chromatic
  * tuner.
  *
  * UI type <https://github.com/rations/LV2-haiku/ns/ui-haiku#HaikuUI>:
@@ -34,8 +34,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define HKTUNER_URI "https://github.com/rations/hktuner"
-#define HKTUNER_UI_URI HKTUNER_URI "#ui"
+#define RKTUNER_URI "https://github.com/rations/rktuner"
+#define RKTUNER_UI_URI RKTUNER_URI "#ui"
 
 enum { HKT_PORT_REF_FREQ = 0, HKT_PORT_FREQ = 1, HKT_PORT_CLARITY = 2 };
 
@@ -110,11 +110,11 @@ static BBitmap *load_sprite(const char *bundle_path, const char *name)
 
 /* The whole widget: cropped LCD art + sprite layers (double-buffered) with
    the reference-frequency entry on the black strip below the device. */
-class HktunerView : public BView
+class RktunerView : public BView
 {
 public:
-    HktunerView(const char *bundle_path, LV2UI_Write_Function write, LV2UI_Controller controller)
-        : BView("hktuner_ui", B_WILL_DRAW), fWrite(write), fController(controller), fOff(NULL),
+    RktunerView(const char *bundle_path, LV2UI_Write_Function write, LV2UI_Controller controller)
+        : BView("rktuner_ui", B_WILL_DRAW), fWrite(write), fController(controller), fOff(NULL),
           fOffView(NULL), fFreq(0.0f), fClarity(0.0f), fRef(kRefDefault)
     {
         fBackground = load_sprite(bundle_path, "background.png");
@@ -153,7 +153,7 @@ public:
         AddChild(fRefInput);
     }
 
-    virtual ~HktunerView()
+    virtual ~RktunerView()
     {
         if (fOff) {
             if (fOffView) {
@@ -187,7 +187,7 @@ public:
         const BRect frame(0, 0, kViewW - 1, kViewH - 1);
         fOff = new (std::nothrow) BBitmap(frame, B_BITMAP_ACCEPTS_VIEWS, B_RGBA32);
         if (fOff && fOff->IsValid()) {
-            fOffView = new (std::nothrow) BView(frame, "hktuner_off", B_FOLLOW_NONE, 0);
+            fOffView = new (std::nothrow) BView(frame, "rktuner_off", B_FOLLOW_NONE, 0);
             if (fOffView) {
                 fOff->AddChild(fOffView);
             }
@@ -480,10 +480,10 @@ static LV2UI_Handle ui_instantiate(const LV2UI_Descriptor *descriptor, const cha
 {
     (void)descriptor;
     (void)features;
-    if (!widget || !plugin_uri || strcmp(plugin_uri, HKTUNER_URI) != 0) {
+    if (!widget || !plugin_uri || strcmp(plugin_uri, RKTUNER_URI) != 0) {
         return NULL;
     }
-    HktunerView *view = new (std::nothrow) HktunerView(bundle_path, write_function, controller);
+    RktunerView *view = new (std::nothrow) RktunerView(bundle_path, write_function, controller);
     if (!view) {
         return NULL;
     }
@@ -493,7 +493,7 @@ static LV2UI_Handle ui_instantiate(const LV2UI_Descriptor *descriptor, const cha
 
 static void ui_cleanup(LV2UI_Handle handle)
 {
-    HktunerView *view = static_cast<HktunerView *>(handle);
+    RktunerView *view = static_cast<RktunerView *>(handle);
     if (!view) {
         return;
     }
@@ -506,7 +506,7 @@ static void ui_cleanup(LV2UI_Handle handle)
 static void ui_port_event(LV2UI_Handle handle, uint32_t port_index, uint32_t buffer_size,
                           uint32_t format, const void *buffer)
 {
-    HktunerView *view = static_cast<HktunerView *>(handle);
+    RktunerView *view = static_cast<RktunerView *>(handle);
     if (!view || format != 0 || buffer_size != sizeof(float) || !buffer) {
         return;
     }
@@ -532,13 +532,13 @@ static const void *ui_extension_data(const char *uri)
     return NULL;
 }
 
-static const LV2UI_Descriptor hktuner_ui_descriptor = {
-    HKTUNER_UI_URI, ui_instantiate, ui_cleanup, ui_port_event, ui_extension_data,
+static const LV2UI_Descriptor rktuner_ui_descriptor = {
+    RKTUNER_UI_URI, ui_instantiate, ui_cleanup, ui_port_event, ui_extension_data,
 };
 
 LV2_SYMBOL_EXPORT const LV2UI_Descriptor *lv2ui_descriptor(uint32_t index)
 {
-    return (index == 0) ? &hktuner_ui_descriptor : NULL;
+    return (index == 0) ? &rktuner_ui_descriptor : NULL;
 }
 
 } /* extern "C" */

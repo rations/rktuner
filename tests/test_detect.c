@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Offline detection test for hktuner: drives the plugin through the public
+ * Offline detection test for rktuner: drives the plugin through the public
  * LV2 descriptor API with a synchronous worker (the schedule feature calls
  * work() immediately and the response is applied right after run(), which
  * the worker spec explicitly allows for freewheeling hosts). Feeds
@@ -22,7 +22,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define TEST_URI "https://github.com/rations/hktuner"
+#define TEST_URI "https://github.com/rations/rktuner"
 #define RATE 48000.0
 #define BLOCK 256
 #define N_PORTS 7

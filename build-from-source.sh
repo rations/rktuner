@@ -1,12 +1,13 @@
 #!/bin/sh
-# One-shot build + install ON A HAIKU MACHINE (run this inside Haiku, not on
-# the dev host). Mirrors the sibling ports' build-from-source scripts.
+# One-shot build + install ON A RENKUOS MACHINE (run this inside RenkuOS, not
+# on the dev host). Mirrors the sibling ports' build-from-source scripts.
 #
 #   ./build-from-source.sh
 #
-# Builds hktuner.lv2 against the sibling LV2-haiku checkout's staged headers
-# and installs the bundle into the user's non-packaged add-ons dir, where the
-# default LV2_PATH picks it up. Build LV2-haiku first.
+# Builds rktuner.lv2 and the rktuner app against the sibling LV2-renku
+# checkout's stage, installs the bundle into the user's non-packaged add-ons
+# dir (the default LV2_PATH picks it up) and the app, with its JACK add-on,
+# into the user's non-packaged apps and add-ons dirs. Build LV2-renku first.
 
 set -eu
 
@@ -18,4 +19,13 @@ pkgman install -y pkgconfig gcc make
 make
 make install
 
-echo "done: bundle in $HOME/config/non-packaged/add-ons/media/LV2/hktuner.lv2"
+APPS=$HOME/config/non-packaged/apps
+mkdir -p "$APPS"
+cp build/rktuner "$APPS/rktuner"
+if [ -f build/backends/jack.so ]; then
+	mkdir -p "$HOME/config/non-packaged/add-ons/rktuner"
+	cp build/backends/jack.so "$HOME/config/non-packaged/add-ons/rktuner/jack.so"
+fi
+
+echo "done: bundle in $HOME/config/non-packaged/add-ons/media/LV2/rktuner.lv2"
+echo "      app in $APPS/rktuner"

@@ -1,0 +1,9 @@
+// rktuner app resources: signature (must match the BApplication
+// constructor), launch behaviour and icon. The version resource is written by
+// setversion at link time, from VERSION.
+resource app_signature "application/x-vnd.rations-rktuner";
+
+// One instance: a second one would be a second media node on the same input.
+resource app_flags B_SINGLE_LAUNCH;
+
+#include "icons/rktuner_icon.rdef"

@@ -1,11 +1,27 @@
-# hktuner
+# rktuner
 
-> This repository is the source of the `hktuner` package, part of the
-> [JackDAW stack](https://github.com/rations/jackDAW-renku) for RenkuOS. The 0.5
-> release's `install.sh` is for Haiku hrev60256; there is no RenkuOS release yet.
+> This repository is the source of the RenkuOS package `rktuner` (formerly `hktuner`):
+> the rktuner app and the rktuner LV2 plug-in. It needs `lv2_renku` from
+> [LV2-renku](https://github.com/rations/LV2-renku).
 
-A chromatic tuner LV2 plugin for [RenkuOS](https://github.com/RenkuOS) (a Haiku fork), with a native
-Interface Kit GUI. MIT licensed.
+A chromatic tuner for [RenkuOS](https://github.com/RenkuOS) (a Haiku fork), with a native
+Interface Kit display: an app of its own, and an LV2 plug-in for any LV2 host, such as
+[Kasen](https://github.com/rations/kasen). MIT licensed.
+
+## The app
+
+**rktuner** (Applications menu) runs the tuner without a DAW. Plug a guitar or bass into
+your sound card, choose its input in **Audio → Input** and tune. It plays through the
+RenkuOS Media Kit, or JACK when the jack package is installed (**Audio → JACK**); by
+default it listens only, and **Audio → Hear the input** passes the input through to your
+speakers. The backend, input, A4 reference and window position are kept for next time.
+The first time, the input is the first one on the sound card that runs the system clock.
+
+The app is the plug-in run by LV2-renku's hosting core, on Kasen's audio backends, like
+NAMku's app; it never links libjack (JACK support is the `jack.so` add-on in
+`add-ons/rktuner/`).
+
+## The plug-in
 
 - **Stereo pass-through**: drop it anywhere in a signal chain; the audio is copied through
   untouched while pitch is detected on the L+R mix.
@@ -36,12 +52,16 @@ plugin still passes audio and reports `freq = 0`.
 
 ## Building
 
-Requires a built [LV2-renku](https://github.com/rations/LV2-renku) checkout next door (its
-`build/stage` provides the LV2 headers via pkg-config) and, on RenkuOS, gcc and make
-(`pkgman install -y gcc make` if missing).
+Requires a built [LV2-renku](https://github.com/rations/LV2-renku) checkout next door: its
+`build/stage` provides the LV2 headers via pkg-config, and for the app the hosting core,
+the audio backends and the JACK add-on. On RenkuOS also gcc and make
+(`pkgman install -y gcc make` if missing). `packaging/make-hpkg.sh` builds the package;
+the version comes from `VERSION`. `tools/make_icon.py` regenerates the app icon.
 
 ```sh
-make                 # builds build/hktuner.lv2 (DSP; plus the BView UI on RenkuOS)
+make                 # builds build/rktuner.lv2 (DSP; plus the BView UI on RenkuOS)
+                     # and, on RenkuOS, the app build/rktuner
+make test            # offline pitch-detection test
 make install         # copies the bundle to ~/config/non-packaged/add-ons/media/LV2/
 make validate        # lv2ls / lv2info against the LV2-renku stage
 LV2_HAIKU=/path/to/LV2-haiku make   # if the checkout is not at ~/LV2-haiku
