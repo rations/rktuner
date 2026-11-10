@@ -2,9 +2,11 @@
 
 > This repository is the source of the RenkuOS package `rktuner` (formerly `hktuner`):
 > the rktuner app and the rktuner LV2 plug-in. It needs `lv2_renku` from
-> [LV2-renku](https://github.com/rations/LV2-renku).
+> [LV2-renku](https://github.com/rations/LV2-renku). Built packages are on the
+> [Releases](https://github.com/rations/rktuner/releases) page, and
+> [renku-audio](https://github.com/rations/renku-audio) lists the whole audio stack.
 
-A chromatic tuner for [RenkuOS](https://github.com/RenkuOS) (a Haiku fork), with a native
+A chromatic tuner for [RenkuOS](https://github.com/RenkuOS), with a native
 Interface Kit display: an app of its own, and an LV2 plug-in for any LV2 host, such as
 [Kasen](https://github.com/rations/kasen). MIT licensed.
 
