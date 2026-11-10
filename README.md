@@ -64,7 +64,7 @@ make                 # builds build/rktuner.lv2 (DSP; plus the BView UI on Renku
 make test            # offline pitch-detection test
 make install         # copies the bundle to ~/config/non-packaged/add-ons/media/LV2/
 make validate        # lv2ls / lv2info against the LV2-renku stage
-LV2_HAIKU=/path/to/LV2-haiku make   # if the checkout is not at ~/LV2-haiku
+LV2_RENKU=/path/to/LV2-renku make   # if the checkout is not at ~/LV2-renku
 ```
 
 The LV2 spec bundles and the `ui-haiku.lv2` type bundle must be installed once from the

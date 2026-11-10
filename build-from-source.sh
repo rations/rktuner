@@ -11,8 +11,8 @@
 
 set -eu
 
-LV2_HAIKU=${LV2_HAIKU:-$HOME/LV2-haiku}
-export LV2_HAIKU
+LV2_RENKU=${LV2_RENKU:-$HOME/LV2-renku}
+export LV2_RENKU
 
 pkgman install -y pkgconfig gcc make
 

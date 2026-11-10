@@ -4,8 +4,8 @@
 # bundle (DSP .so, native HaikuUI .so, TTLs and the GUI sprite PNGs) in
 # add-ons/media/LV2/rktuner.lv2.
 #
-# Needs the sibling LV2-renku checkout built first (LV2_HAIKU, default
-# $HOME/LV2-haiku): the plug-in compiles against its staged lv2 headers, the
+# Needs the sibling LV2-renku checkout built first (LV2_RENKU, default
+# $HOME/LV2-renku): the plug-in compiles against its staged lv2 headers, the
 # app links its hosting core and audio backends, and its JACK add-on is the
 # one it stages. The LV2 spec bundles a host needs at runtime ship in the
 # lv2_renku package.
@@ -22,8 +22,8 @@ STAGE_PKG="$HERE/stage"
 HAIKU_PKG=$(ls /boot/system/packages/haiku-r*-x86_64.hpkg | head -n 1)
 HAIKU_MIN=$(basename "$HAIKU_PKG" | sed -e 's/^haiku-//' -e 's/-[0-9]*-x86_64\.hpkg$//')
 
-LV2_HAIKU=${LV2_HAIKU:-$HOME/LV2-haiku}
-export LV2_HAIKU
+LV2_RENKU=${LV2_RENKU:-$HOME/LV2-renku}
+export LV2_RENKU
 
 pkgman install -y gcc make pkgconfig || true
 

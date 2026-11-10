@@ -10,8 +10,8 @@
 #
 # Never treat a Linux build as authoritative; the target is Haiku.
 
-LV2_HAIKU ?= $(HOME)/LV2-haiku
-STAGE := $(LV2_HAIKU)/build/stage
+LV2_RENKU ?= $(HOME)/LV2-renku
+STAGE := $(LV2_RENKU)/build/stage
 PKGCFG := PKG_CONFIG_PATH=$(STAGE)/lib/pkgconfig
 
 BUILD_DIR ?= build
@@ -52,7 +52,7 @@ endif
 check-stage:
 	@test -f $(STAGE)/lib/pkgconfig/lv2.pc || { \
 		echo "error: $(STAGE)/lib/pkgconfig/lv2.pc not found;" \
-		     "build the LV2-haiku stack first (make in $(LV2_HAIKU))" >&2; \
+		     "build the LV2-renku stack first (make in $(LV2_RENKU))" >&2; \
 		exit 1; }
 
 $(OUT)/rktuner.so: src/rktuner.c
@@ -70,7 +70,7 @@ $(OUT)/rktuner_ui.so: src/rktuner_ui.cpp
 # ---- the app (Haiku only) ---------------------------------------------------
 
 $(HOST_LIBS):
-	@echo "error: $@ not found; build LV2-renku first (make in $(LV2_HAIKU))," \
+	@echo "error: $@ not found; build LV2-renku first (make in $(LV2_RENKU))," \
 	     "which stages the hosting core and audio backends" >&2; exit 1
 
 # Resources (signature, launch flags, icon): the .rdef goes through the C
