@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate rktuner's application icon as HVIF.
+"""Generate rktuner's application icon (a tuning fork) as HVIF.
 
 HVIF is Haiku's vector icon format (what Icon-O-Matic exports and what
 BIconUtils renders). The encoder and the look (soft shadow, dark outline, a
@@ -242,30 +242,56 @@ def rounded_rect(icon, x0, y0, x1, y1, r):
     ], True)
 
 
+def fork_path(icon):
+    """A tuning fork, upright: two tines with rounded tips joined by a U, and
+    a stem with a rounded foot. One closed path, (point, in, out) triples."""
+    def c(x, y):
+        return ((x, y), (x, y), (x, y))
+
+    return icon.curve_path([
+        ((19, 10), (19, 10), (19, 7.5)),        # left tine, outer edge, tip
+        ((22.5, 6), (20.6, 6), (24.4, 6)),
+        ((26, 10), (26, 7.5), (26, 10)),
+        ((26, 29), (26, 29), (26, 34)),         # inner U
+        ((32, 37), (28.5, 37), (35.5, 37)),
+        ((38, 29), (38, 34), (38, 29)),
+        ((38, 10), (38, 10), (38, 7.5)),        # right tine
+        ((41.5, 6), (39.6, 6), (43.4, 6)),
+        ((45, 10), (45, 7.5), (45, 10)),
+        ((45, 29), (45, 29), (45, 38)),         # outer U into the stem
+        ((35, 44.5), (41, 43.5), (35, 44.5)),
+        c(35, 55.5),
+        ((32, 59.5), (35, 58), (29, 59.5)),       # rounded foot
+        c(29, 55.5),
+        ((29, 44.5), (29, 44.5), (23, 43.5)),
+        ((19, 29), (19, 38), (19, 29)),
+    ], True)
+
+
 def icon_rktuner():
-    """A tuner: a black body, a dark screen with a scale of ticks and a green
-    needle on the centre mark."""
+    """A steel tuning fork ringing: green vibration arcs either side of the
+    tines, a soft ground shadow under the foot."""
     i = Icon()
-    ground = i.radial((32, 58), 26, [(0.0, (0, 0, 0, 80)), (1.0, (0, 0, 0, 0))])
-    i.shape(ground, [i.ellipse((32, 58), 27, 4)])
-    solid_glyph(i, [rounded_rect(i, 5, 9, 59, 55, 8)], "black", (5, 9, 59, 55))
-    screen = rounded_rect(i, 11, 15, 53, 45, 4)
-    i.shape(i.linear((11, 15), (11, 45), [(0.0, (34, 38, 36, 255)), (1.0, (12, 14, 13, 255))]),
-            [screen])
-    i.shape(i.solid((0, 0, 0, 255)), [screen], stroke=(1, JOIN_ROUND, CAP_ROUND))
-    # The scale: ticks on an arc around the needle's pivot (32, 44).
-    tick = i.solid((150, 156, 152, 255))
-    for a in (-60, -40, -20, 20, 40, 60):
-        t = math.radians(a)
-        x0, y0 = 32 + 21 * math.sin(t), 44 - 21 * math.cos(t)
-        x1, y1 = 32 + 25 * math.sin(t), 44 - 25 * math.cos(t)
-        i.shape(tick, [i.open_path([((x0, y0), (x0, y0), (x0, y0)), ((x1, y1), (x1, y1), (x1, y1))])],
-                stroke=(2, JOIN_ROUND, CAP_ROUND))
-    centre = i.open_path([((32, 18), (32, 18), (32, 18)), ((32, 23), (32, 23), (32, 23))])
-    i.shape(i.solid((120, 255, 140, 255)), [centre], stroke=(3, JOIN_ROUND, CAP_ROUND))
-    needle = i.open_path([((32, 43), (32, 43), (32, 43)), ((32, 21), (32, 21), (32, 21))])
-    stroked_glyph(i, [needle], "green", (30, 21, 34, 43), 3)
-    solid_glyph(i, [i.circle((32, 44), 3.5)], "steel", (28.5, 40.5, 35.5, 47.5))
+    ground = i.radial((32, 60), 14, [(0.0, (0, 0, 0, 90)), (1.0, (0, 0, 0, 0))])
+    i.shape(ground, [i.ellipse((32, 60), 14, 3)])
+
+    # Vibration: two arcs per side, the outer one taller.
+    arcs = []
+    for side in (-1, 1):
+        def x(v):
+            return 32 + side * v
+        arcs.append(i.open_path([((x(18), 9), (x(18), 9), (x(21.5), 13)),
+                                 ((x(18), 25), (x(21.5), 21), (x(18), 25))]))
+        arcs.append(i.open_path([((x(24), 4), (x(24), 4), (x(30), 11)),
+                                 ((x(24), 30), (x(30), 23), (x(24), 30))]))
+    stroked_glyph(i, arcs, "green", (2, 4, 62, 30), 2.5)
+
+    fork = fork_path(i)
+    solid_glyph(i, [fork], "steel", (19, 6, 45, 59))
+    # A darker bevel down the inside of each tine reads as metal at 16 px.
+    bevel = i.solid((70, 72, 82, 120))
+    i.shape(bevel, [i.polygon([(24, 11), (26, 11), (26, 29), (24, 28)]),
+                    i.polygon([(43, 11), (45, 11), (45, 29), (43, 30)])])
     return i
 
 
